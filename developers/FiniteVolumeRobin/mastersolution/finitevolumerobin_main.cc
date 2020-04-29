@@ -24,7 +24,6 @@
 #include "finitevolumerobin.h"
 
 int main() {
-
   // coefficient functions
   auto g = [](const Eigen::Vector2d & /*x*/) { return 1.0; };
   auto gamma = [](const Eigen::Vector2d &x) { return 1.0 + x(0) * x(0); };
@@ -34,9 +33,9 @@ int main() {
   for (int i = 1; i <= 4; ++i) {
     // read mesh
     auto mesh_factory = std::make_unique<lf::mesh::hybrid2d::MeshFactory>(2);
-    lf::io::GmshReader reader(std::move(mesh_factory),
-                              CURRENT_SOURCE_DIR "/../meshes/disk" +
-                                  std::to_string(i) + ".msh");
+    lf::io::GmshReader reader(
+        std::move(mesh_factory),
+        CURRENT_SOURCE_DIR "/../meshes/disk" + std::to_string(i) + ".msh");
     auto mesh_p = reader.mesh();
 
     // Construct dofhanlder for linear finite elements on the current mesh.

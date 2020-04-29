@@ -85,11 +85,10 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_1 */
 
-
 /**
  * @brief Heat evolution solver: the solver obtains the
- * discrete evolution operator from the Radau3MOLTimestepper class and repeatedly
- * iterates its applicaiton starting from the initial condition
+ * discrete evolution operator from the Radau3MOLTimestepper class and
+ * repeatedly iterates its applicaiton starting from the initial condition
  * @param dofh The DOFHandler object
  * @param m is total number of steps until final time final_time (double)
  * @param final_time The duration for which to solve the PDE
@@ -138,7 +137,6 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
 }
 /* SAM_LISTING_END_6 */
 
-
 /* Implementing member function Eval of class LinFEMassMatrixProvider*/
 Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
     const lf::mesh::Entity &tria) {
@@ -163,7 +161,6 @@ Eigen::Matrix<double, 3, 3> LinFEMassMatrixProvider::Eval(
 #endif
   return elMat;  // return the local mass element matrix
 }
-
 
 /* Implementing constructor of class Radau3MOLTimestepper */
 /* SAM_LISTING_BEGIN_4 */
@@ -240,7 +237,6 @@ Radau3MOLTimestepper::Radau3MOLTimestepper(const lf::assemble::DofHandler &dofh)
 #endif
 }
 /* SAM_LISTING_END_4 */
-
 
 /* Implementation of Radau3MOLTimestepper member functions */
 // The function discreteEvolutionOperator() returns the discretized evolution

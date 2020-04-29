@@ -41,7 +41,7 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
     }
     // truncation to a finite vector. Only required on one side, because all
     // information flows from left to right.
-    mu(0) = 0.0; // Value of u0 to the left of x=0
+    mu(0) = 0.0;  // Value of u0 to the left of x=0
   }
 #else
   //====================

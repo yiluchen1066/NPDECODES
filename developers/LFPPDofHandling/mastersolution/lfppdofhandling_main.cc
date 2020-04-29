@@ -50,8 +50,8 @@ int main() {
 
   // Subproblem d)
   std::cout << "\n -- Subproblem (d)\n";
-  std::cout << "Dofs on boundary: " << LFPPDofHandling::countBoundaryDofs(lin_dofh)
-            << "\n";
+  std::cout << "Dofs on boundary: "
+            << LFPPDofHandling::countBoundaryDofs(lin_dofh) << "\n";
 
   // Subproblem e)
   std::cout << "\n -- Subproblem (e)\n";

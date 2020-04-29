@@ -98,7 +98,7 @@ Eigen::MatrixXd waveLeapfrogABC(double c, double T, unsigned int N,
   Eigen::VectorXd nu = Eigen::VectorXd::Zero(N);   // = nu^(-1/2)
   Eigen::VectorXd phi = Eigen::VectorXd::Zero(N);  // = phi(t_0)
   // Universally zero initial conditions make it possible to skip
-  // the special initial step usually required for leapfrog. 
+  // the special initial step usually required for leapfrog.
   double tau = T / m;  // Timestep size
   // The diagonal matrix to be "inverted" in each timestep
   Eigen::SparseLU<Eigen::SparseMatrix<double>> solver(1.0 / tau * M + 0.5 * B);

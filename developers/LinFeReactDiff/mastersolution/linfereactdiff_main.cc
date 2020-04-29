@@ -5,15 +5,15 @@
 
 #include "linfereactdiff.h"
 
+#include <cmath>
 #include <iostream>
 #include <memory>
-#include <cmath>
 
 #include <Eigen/Core>
 
 #include <lf/base/base.h>
-#include <lf/refinement/refinement.h>
 #include <lf/mesh/mesh.h>
+#include <lf/refinement/refinement.h>
 
 int main() {
   const lf::base::size_type num_levels = 5;

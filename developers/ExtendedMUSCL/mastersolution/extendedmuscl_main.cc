@@ -32,8 +32,7 @@ int main() {
   for (int n = 0; n < N; ++n) {
     int steps = (int)(T / tau(n) + 0.5);
     double y = y0;
-    for (int i = 0; i < steps; ++i)
-      y = sspEvolop(f, y, tau(n));
+    for (int i = 0; i < steps; ++i) y = sspEvolop(f, y, tau(n));
     error(n) = std::abs(yT_exact - y);
   }
 

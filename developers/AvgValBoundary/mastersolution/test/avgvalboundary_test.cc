@@ -6,7 +6,6 @@
  * @ copyright Developed at ETH Zurich
  */
 
-
 #include <gtest/gtest.h>
 
 #include <memory>
@@ -58,4 +57,4 @@ TEST(AvgValBoundary, TestBoundaryFunctional) {
   double boundary_functional = compBoundaryFunctional(dofh, mu, const_one);
   ASSERT_NEAR(boundary_functional, 0.880602, 0.00001);
 }
-} // namespace AvgValBoundary::test
+}  // namespace AvgValBoundary::test

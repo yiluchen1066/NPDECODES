@@ -89,4 +89,4 @@ TEST(FiniteVolumeRobin, EdgeVectorProvider) {
   EXPECT_NEAR(product(0, 0), 54.0, 1E-6);
 }
 
-} // namespace FiniteVolumeRobin::test
+}  // namespace FiniteVolumeRobin::test
