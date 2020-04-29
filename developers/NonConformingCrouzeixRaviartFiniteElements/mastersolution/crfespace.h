@@ -20,7 +20,7 @@ namespace NonConformingCrouzeixRaviartFiniteElements {
  *  This class complies with Lehrfempp lf::uscalfe::ScalarUniformFESpace */
 /* SAM_LISTING_BEGIN_1 */
 class CRFeSpace : public lf::uscalfe::UniformScalarFESpace<double> {
- public:
+public:
   /** @brief no default constructors*/
   CRFeSpace() = delete;
   CRFeSpace(const CRFeSpace &) = delete;
@@ -34,16 +34,16 @@ class CRFeSpace : public lf::uscalfe::UniformScalarFESpace<double> {
       : lf::uscalfe::UniformScalarFESpace<double>(
             std::move(mesh_p), std::make_shared<CRReferenceFiniteElement>(),
             nullptr, nullptr) {}
-   
-   // TODO: task 2-14.t)
-   #if SOLUTION
-   #else
-   #endif
+
+// TODO: task 2-14.t)
+#if SOLUTION
+#else
+#endif
 
   ~CRFeSpace() override = default;
 };
 /* SAM_LISTING_END_1 */
 
-}  // namespace NonConformingCrouzeixRaviartFiniteElements
+} // namespace NonConformingCrouzeixRaviartFiniteElements
 
-#endif  // NUMPDE_CRFESPACE_H
+#endif // NUMPDE_CRFESPACE_H

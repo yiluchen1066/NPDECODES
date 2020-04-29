@@ -19,7 +19,6 @@
 
 namespace StableEvaluationAtAPoint {
 
-
 /* Returns the mesh size for the given mesh. */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
 
@@ -210,7 +209,6 @@ double Psi(const Eigen::Vector2d y) {
 
   } else {
     Psi_xy = std::pow(std::cos(constant * (dist - 0.5)), 2);
-
   }
 
   return Psi_xy;
@@ -259,16 +257,15 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-    
-    laplPsi_xy = ( 2 * std::pow(constant, 2) / (y - half).squaredNorm() )
-                * (y-half).dot(y-half) * 
-				( std::pow(std::sin( constant * (dist - 0.5) ), 2)
-                - std::pow(std::cos( constant * (dist - 0.5) ), 2) )
-                - (2 * constant / dist)
-                * std::cos( constant * (dist - 0.5) )
-                * std::sin( constant * (dist - 0.5) )
-				* ( 1.0 - ((y-half).dot(y-half) / (y-half).squaredNorm()) ) ;
 
+    laplPsi_xy =
+        (2 * std::pow(constant, 2) / (y - half).squaredNorm()) *
+            (y - half).dot(y - half) *
+            (std::pow(std::sin(constant * (dist - 0.5)), 2) -
+             std::pow(std::cos(constant * (dist - 0.5)), 2)) -
+        (2 * constant / dist) * std::cos(constant * (dist - 0.5)) *
+            std::sin(constant * (dist - 0.5)) *
+            (1.0 - ((y - half).dot(y - half) / (y - half).squaredNorm()));
   }
 
   return laplPsi_xy;
@@ -307,15 +304,16 @@ double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     for (int l = 0; l < P; l++) {
       val -= w_ref[l] * u(zeta.col(l)) *
              (2.0 * (gradG(x, zeta.col(l))).dot(gradPsi(zeta.col(l))) +
-             G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
+              G(x, zeta.col(l)) * laplPsi(zeta.col(l))) *
              gram_dets[l];
     }
   }
-  
+
   /* VARIANT:
   auto lambda = lf::mesh::utils::MeshFunctionGlobal( [&] (Eigen::Vector2d y) {
 
-	return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) * laplPsi(y) ));
+        return (-u(y) * (2.0 * gradG(x, y).dot(gradPsi(y)) + G(x, y) *
+  laplPsi(y) ));
   }
   );
 
@@ -345,6 +343,5 @@ double stab_pointEval(
 
   return res;
 }
-
 
 } /* namespace StableEvaluationAtAPoint */
