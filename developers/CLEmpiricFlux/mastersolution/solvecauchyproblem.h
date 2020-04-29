@@ -46,8 +46,8 @@ Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
                                double h, double T) {
   Eigen::VectorXd mu0;
 #if SOLUTION
-  double A = -1.0; // left bound of support
-  double B = 1.0;  // right bound of support
+  double A = -1.0;  // left bound of support
+  double B = 1.0;   // right bound of support
   double AT = std::min(A, A - f.derivative(-1.0) * T);
   double BT = std::max(B, B + f.derivative(1.0) * T);
 
@@ -108,6 +108,6 @@ Eigen::VectorXd solveCauchyProblem(const UniformCubicSpline &f,
                                    const Eigen::VectorXd &mu0, double h,
                                    double T);
 
-} // namespace CLEmpiricFlux
+}  // namespace CLEmpiricFlux
 
 #endif

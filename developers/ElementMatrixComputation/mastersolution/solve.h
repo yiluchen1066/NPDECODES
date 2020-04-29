@@ -132,6 +132,6 @@ Eigen::VectorXd solvePoissonBVP();
  */
 Eigen::VectorXd solveNeumannEq();
 
-} // namespace ElementMatrixComputation
+}  // namespace ElementMatrixComputation
 
-#endif // SOLVE_H_
+#endif  // SOLVE_H_

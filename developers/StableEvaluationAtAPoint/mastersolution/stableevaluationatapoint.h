@@ -21,7 +21,6 @@ namespace StableEvaluationAtAPoint {
 
 /* Returns the mesh size for the given mesh. */
 double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
-
   double mesh_size = 0.0;
 
   // Find maximal edge length
@@ -40,7 +39,6 @@ double getMeshSize(const std::shared_ptr<const lf::mesh::Mesh> &mesh_p) {
 
 /* Returns G(x,y). */
 double G(Eigen::Vector2d x, Eigen::Vector2d y) {
-
   double res;
 
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
@@ -51,7 +49,6 @@ double G(Eigen::Vector2d x, Eigen::Vector2d y) {
 
 /* Returns the gradient of G(x,y). */
 Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
-
   Eigen::Vector2d res;
 
   LF_ASSERT_MSG(x != y, "G not defined for these coordinates!");
@@ -68,7 +65,6 @@ Eigen::Vector2d gradG(Eigen::Vector2d x, Eigen::Vector2d y) {
 template <typename FUNCTOR>
 double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
            const Eigen::Vector2d x) {
-
   double PSLval = 0.0;
 
   // This predicate returns true for edges on the boundary
@@ -101,7 +97,6 @@ double PSL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
 template <typename FUNCTOR>
 double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
            const Eigen::Vector2d x) {
-
   double PDLval = 0.0;
 
   // This predicate returns true for edges on the boundary
@@ -150,7 +145,6 @@ double PDL(std::shared_ptr<const lf::mesh::Mesh> mesh, const FUNCTOR &v,
  * evaluation of u. The mesh is supposed to be the unit square.
  */
 double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
-
   double error = 0.0;
 
   const auto u = [](Eigen::Vector2d x) -> double {
@@ -194,7 +188,6 @@ double pointEval(std::shared_ptr<const lf::mesh::Mesh> mesh) {
 
 /* Computes Psi_x(y). */
 double Psi(const Eigen::Vector2d y) {
-
   double Psi_xy;
 
   Eigen::Vector2d half(0.5, 0.5);
@@ -216,7 +209,6 @@ double Psi(const Eigen::Vector2d y) {
 
 /* Computes grad(Psi_x(y)). */
 Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
-
   Eigen::Vector2d gradPsi_xy;
 
   Eigen::Vector2d half(0.5, 0.5);
@@ -232,7 +224,6 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
     gradPsi_xy(1) = 0.0;
 
   } else {
-
     gradPsi_xy = -2.0 * std::cos(constant * (dist - 0.5)) *
                  std::sin(constant * (dist - 0.5)) * (constant / dist) *
                  (y - half);
@@ -243,7 +234,6 @@ Eigen::Vector2d gradPsi(const Eigen::Vector2d y) {
 
 /* Computes Laplacian of Psi_x(y). */
 double laplPsi(const Eigen::Vector2d y) {
-
   double laplPsi_xy;
 
   Eigen::Vector2d half(0.5, 0.5);
@@ -257,7 +247,6 @@ double laplPsi(const Eigen::Vector2d y) {
     laplPsi_xy = 0.0;
 
   } else {
-
     laplPsi_xy =
         (2 * std::pow(constant, 2) / (y - half).squaredNorm()) *
             (y - half).dot(y - half) *
@@ -278,7 +267,6 @@ double laplPsi(const Eigen::Vector2d y) {
 template <typename FUNCTOR>
 double Jstar(std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
              FUNCTOR &&u, const Eigen::Vector2d x) {
-
   double val = 0.0;
 
   std::shared_ptr<const lf::mesh::Mesh> mesh = fe_space->Mesh();
@@ -330,7 +318,6 @@ template <typename FUNCTOR>
 double stab_pointEval(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     FUNCTOR &&u, const Eigen::Vector2d x) {
-
   double res = 0.0;
 
   Eigen::Vector2d half(0.5, 0.5);

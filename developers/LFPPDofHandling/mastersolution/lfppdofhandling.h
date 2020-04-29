@@ -26,8 +26,8 @@ namespace LFPPDofHandling {
  * dofs of the subordinate entities. E.g. will cells and edges in a S_1^0
  * FE space have 0 dofs.
  */
-std::array<std::size_t, 3>
-countEntityDofs(const lf::assemble::DofHandler &dofhandler);
+std::array<std::size_t, 3> countEntityDofs(
+    const lf::assemble::DofHandler &dofhandler);
 
 /**
  * @brief Count number of dofs on the boundary
@@ -63,10 +63,10 @@ double integrateQuadraticFEFunction(const lf::assemble::DofHandler &dofhandler,
  * @param Coefficient vector of the linear FE space
  * @return Coefficient vector of the quadratic FE space
  */
-Eigen::VectorXd
-convertDOFsLinearQuadratic(const lf::assemble::DofHandler &dofh_Linear_FE,
-                           const lf::assemble::DofHandler &dofh_Quadratic_FE,
-                           const Eigen::VectorXd &mu);
+Eigen::VectorXd convertDOFsLinearQuadratic(
+    const lf::assemble::DofHandler &dofh_Linear_FE,
+    const lf::assemble::DofHandler &dofh_Quadratic_FE,
+    const Eigen::VectorXd &mu);
 
 /**
  * @brief Evaluate the function f in the dofs and put them at the index given by
@@ -124,4 +124,4 @@ Eigen::VectorXd buildCoefVector(const F &f,
   return mu;
 }
 
-} // namespace LFPPDofHandling
+}  // namespace LFPPDofHandling
