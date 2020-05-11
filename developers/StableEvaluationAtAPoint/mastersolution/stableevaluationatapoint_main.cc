@@ -6,17 +6,16 @@
  * @ copyright Developed at SAM, ETH Zurich
  */
 
-#include "stableevaluationatapoint.h"
-
-#include <iostream>
-#include <string>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/io/io.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/mesh_hierarchy.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <string>
+
+#include "stableevaluationatapoint.h"
 
 using namespace StableEvaluationAtAPoint;
 

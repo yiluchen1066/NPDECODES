@@ -6,13 +6,13 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Core>
+#include "../extendedmuscl.h"
 
 #include <gtest/gtest.h>
 
-#include "../extendedmuscl.h"
+#include <Eigen/Core>
+#include <cmath>
+
 #include "../slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL::test {

@@ -9,11 +9,11 @@
 #ifndef MYLINEARLOADVECTOR_H_
 #define MYLINEARLOADVECTOR_H_
 
+#include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
 #include <functional>
 #include <utility>
-
-#include <lf/uscalfe/uscalfe.h>
-#include <Eigen/Core>
 
 namespace ElementMatrixComputation {
 

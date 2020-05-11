@@ -6,12 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "extendedmuscl.h"
-
+#include <Eigen/Core>
 #include <cmath>
 #include <iostream>
 
-#include <Eigen/Core>
+#include "extendedmuscl.h"
 
 using namespace ExtendedMUSCL;
 

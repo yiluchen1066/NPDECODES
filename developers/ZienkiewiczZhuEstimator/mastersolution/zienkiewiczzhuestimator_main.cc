@@ -5,11 +5,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "zienkiewiczzhuestimator.h"
-
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+
+#include "zienkiewiczzhuestimator.h"
 // Eigen includes
 #include <Eigen/Core>
 #include <Eigen/Dense>

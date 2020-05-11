@@ -6,19 +6,17 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include "../finitevolumerobin.h"
 
 #include <gtest/gtest.h>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../finitevolumerobin.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <memory>
 
 namespace FiniteVolumeRobin::test {
 

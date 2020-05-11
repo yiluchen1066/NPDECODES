@@ -8,13 +8,12 @@
 
 #include "testquadraturerules.h"
 
-#include <cassert>
-#include <cmath>
-
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/quad/quad.h>
+
+#include <Eigen/Core>
+#include <cassert>
+#include <cmath>
 
 namespace TestQuadratureRules {
 

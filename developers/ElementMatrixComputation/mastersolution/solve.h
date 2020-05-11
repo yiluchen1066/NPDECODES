@@ -9,16 +9,15 @@
 #ifndef SOLVE_H_
 #define SOLVE_H_
 
-#include <iostream>
-#include <memory>
-#include <stdexcept>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
 
 #include "../meshes/mesh.h"
 #include "mylinearfeelementmatrix.h"

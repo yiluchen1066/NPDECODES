@@ -6,16 +6,15 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <memory>
-#include <stdexcept>
-#include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCholesky>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCholesky>
+#include <memory>
+#include <stdexcept>
+#include <vector>
 
 namespace CoupledSecondOrderBVP {
 

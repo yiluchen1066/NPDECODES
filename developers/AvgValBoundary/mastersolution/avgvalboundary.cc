@@ -8,19 +8,18 @@
 
 #include "avgvalboundary.h"
 
-#include <cmath>
-#include <memory>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
+#include <utility>
+#include <vector>
 
 namespace AvgValBoundary {
 

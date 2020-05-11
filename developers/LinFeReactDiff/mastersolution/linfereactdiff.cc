@@ -5,14 +5,6 @@
 
 #include "linfereactdiff.h"
 
-#include <cmath>
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
@@ -22,6 +14,13 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <cmath>
+#include <memory>
+#include <utility>
 
 namespace LinFeReactDiff {
 

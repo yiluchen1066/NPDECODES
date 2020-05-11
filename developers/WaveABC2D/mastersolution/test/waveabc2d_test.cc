@@ -10,9 +10,9 @@
 #include <memory>
 
 // Eigen includes
-#include <Eigen/Core>
-
 #include <gtest/gtest.h>
+
+#include <Eigen/Core>
 // Lehrfem++ includes
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/uscalfe/uscalfe.h>

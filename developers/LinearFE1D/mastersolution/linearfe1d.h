@@ -6,12 +6,11 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include <Eigen/SparseCholesky>
 #include <cmath>
 #include <fstream>
 #include <iostream>
 #include <vector>
-
-#include <Eigen/SparseCholesky>
 
 namespace LinearFE1D {
 

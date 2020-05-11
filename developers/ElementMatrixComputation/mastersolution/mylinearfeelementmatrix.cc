@@ -8,12 +8,12 @@
 
 #include "mylinearfeelementmatrix.h"
 
-#include <Eigen/Core>
-
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
 
 namespace ElementMatrixComputation {
 

@@ -1,15 +1,14 @@
-#include <array>
-#include <memory>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
+#include "incidencematrices.h"
 
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/mesh.h>
 
-#include "incidencematrices.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <array>
+#include <memory>
 
 namespace IncidenceMatrices {
 

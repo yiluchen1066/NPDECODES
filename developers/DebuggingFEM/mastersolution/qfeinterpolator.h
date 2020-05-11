@@ -9,11 +9,11 @@
 #ifndef NPDECODES_DEBUGGINGFEM_QFEINTERPOLATOR_H_
 #define NPDECODES_DEBUGGINGFEM_QFEINTERPOLATOR_H_
 
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/mesh/mesh.h>
 #include <lf/uscalfe/uscalfe.h>
+
+#include <Eigen/Core>
 
 namespace DebuggingFEM {
 

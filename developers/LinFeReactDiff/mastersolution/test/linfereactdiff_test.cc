@@ -1,12 +1,6 @@
+#include "../linfereactdiff.h"
+
 #include <gtest/gtest.h>
-
-#include <memory>
-#include <utility>
-
-#include <Eigen/Core>
-#include <Eigen/SparseCore>
-#include <Eigen/SparseLU>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/io/io.h>
@@ -15,7 +9,11 @@
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../linfereactdiff.h"
+#include <Eigen/Core>
+#include <Eigen/SparseCore>
+#include <Eigen/SparseLU>
+#include <memory>
+#include <utility>
 
 namespace LinFeReactDiff::test {
 

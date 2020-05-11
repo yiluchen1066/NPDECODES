@@ -5,17 +5,16 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cassert>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
+#include "outputimpedancebvp.h"
 
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "outputimpedancebvp.h"
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <cassert>
 
 namespace OutputImpedanceBVP {
 

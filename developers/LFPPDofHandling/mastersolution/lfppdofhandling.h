@@ -6,9 +6,8 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <array>
-
 #include <Eigen/Dense>
+#include <array>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"

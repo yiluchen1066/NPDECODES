@@ -8,16 +8,14 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <cmath>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
 
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <cmath>
 #include <unsupported/Eigen/KroneckerProduct>
 
 namespace RadauThreeTimestepping {

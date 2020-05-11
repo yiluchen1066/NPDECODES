@@ -6,17 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "radauthreetimestepping.h"
-#include "radauthreetimesteppingode.h"
-
-#include <iostream>
-#include <memory>
-
-#include <Eigen/Core>
-
 #include <lf/io/io.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/utils/utils.h>
+
+#include <Eigen/Core>
+#include <iostream>
+#include <memory>
+
+#include "radauthreetimestepping.h"
+#include "radauthreetimesteppingode.h"
 
 using namespace RadauThreeTimestepping;
 

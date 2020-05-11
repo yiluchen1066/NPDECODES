@@ -4,11 +4,6 @@
  * @date 12/04/2019
  * @copyright Developed at ETH Zurich
  */
-#include <cmath>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/io/io.h>
@@ -18,6 +13,9 @@
 #include <lf/refinement/refinement.h>
 #include <lf/uscalfe/uscalfe.h>
 
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <cmath>
 #include <unsupported/Eigen/KroneckerProduct>
 
 namespace SDIRKMethodOfLines {

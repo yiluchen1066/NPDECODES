@@ -6,10 +6,10 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include <Eigen/Core>
-
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace FiniteVolumeRobin {
 

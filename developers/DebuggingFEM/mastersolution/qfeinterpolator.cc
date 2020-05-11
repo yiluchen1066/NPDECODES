@@ -8,9 +8,9 @@
 
 #include "qfeinterpolator.h"
 
-#include <Eigen/Core>
-
 #include <lf/mesh/mesh.h>
+
+#include <Eigen/Core>
 
 namespace DebuggingFEM {
 

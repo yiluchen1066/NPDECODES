@@ -6,19 +6,18 @@
  * @ copyright Developed at ETH Zurich
  */
 
+#include "../pointevaluationrhs.h"
+
 #include <gtest/gtest.h>
-
-#include <iostream>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/base/base.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/hybrid2d/hybrid2d.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 
-#include "../pointevaluationrhs.h"
+#include <Eigen/Core>
+#include <iostream>
+
 #include "../pointevaluationrhs_norms.h"
 
 /* SAM_LISTING_BEGIN_1 */

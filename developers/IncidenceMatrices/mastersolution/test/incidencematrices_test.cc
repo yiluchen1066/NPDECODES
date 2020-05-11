@@ -1,13 +1,11 @@
-#include <memory>
+#include "../incidencematrices.h"
+
+#include <gtest/gtest.h>
+#include <lf/mesh/mesh.h>
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
-
-#include <gtest/gtest.h>
-
-#include <lf/mesh/mesh.h>
-
-#include "../incidencematrices.h"
+#include <memory>
 
 namespace IncidenceMatrices::test {
 

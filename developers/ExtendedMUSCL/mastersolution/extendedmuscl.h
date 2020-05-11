@@ -9,12 +9,11 @@
  * @copyright Developed at ETH Zurich
  */
 
-#include "slopelimfluxdiff.h"
-
+#include <Eigen/Core>
 #include <cassert>
 #include <cmath>
 
-#include <Eigen/Core>
+#include "slopelimfluxdiff.h"
 
 namespace ExtendedMUSCL {
 

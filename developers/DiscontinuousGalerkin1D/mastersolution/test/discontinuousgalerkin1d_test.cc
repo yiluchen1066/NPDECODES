@@ -6,11 +6,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../discontinuousgalerkin1d.h"
+
 #include <gtest/gtest.h>
 
 #include <Eigen/Core>
-
-#include "../discontinuousgalerkin1d.h"
 
 namespace DiscontinuousGalerkin1D::test {
 

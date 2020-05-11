@@ -8,10 +8,9 @@
 
 #include "lfppdofhandling.h"
 
+#include <Eigen/Dense>
 #include <array>
 #include <memory>
-
-#include <Eigen/Dense>
 
 #include "lf/assemble/assemble.h"
 #include "lf/base/base.h"

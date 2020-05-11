@@ -6,17 +6,16 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include "../radauthreetimestepping.h"
+
 #include <gtest/gtest.h>
-
-#include <Eigen/Core>
-
 #include <lf/assemble/assemble.h>
 #include <lf/geometry/geometry.h>
 #include <lf/mesh/test_utils/test_meshes.h>
 #include <lf/mesh/utils/utils.h>
 #include <lf/uscalfe/uscalfe.h>
 
-#include "../radauthreetimestepping.h"
+#include <Eigen/Core>
 
 namespace RadauThreeTimestepping::test {
 

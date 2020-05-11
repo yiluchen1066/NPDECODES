@@ -8,12 +8,11 @@
  * @copyright Developed at ETH Zurich
  */
 
+#include <Eigen/Core>
+#include <Eigen/Sparse>
 #include <cmath>
 #include <complex>
 #include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/Sparse>
 
 namespace ParametricFiniteElements {
 
