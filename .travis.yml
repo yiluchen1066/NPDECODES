@@ -61,13 +61,17 @@ jobs:
       os: osx
       osx_image: xcode11.4
       compiler: gcc-8
-      env: COMPILER='g++-8' BUILD_TYPE='Debug'
+      env:
+        - MATRIX_EVAL="brew install gcc8 && CC=gcc-8 && CXX=g++-8"
+        - COMPILER='g++-8' BUILD_TYPE='Debug'
       script: "./scripts/ci/run_cmake.sh"
     - stage: compile_test
       os: osx
       osx_image: xcode11.4
       compiler: gcc-8
-      env: COMPILER='g++-8' BUILD_TYPE='Debug'
+      env:
+        - MATRIX_EVAL="brew install gcc8 && CC=gcc-8 && CXX=g++-8"
+        - COMPILER='g++-8' BUILD_TYPE='Debug'
       script: 
         - "./scripts/ci/run_cmake.sh"
         - cd Build/developers
