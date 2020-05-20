@@ -60,14 +60,14 @@ jobs:
     - stage: compile_dependencies
       os: osx
       osx_image: xcode11.4
-      compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Debug'
+      compiler: gcc-10
+      env: COMPILER='g++-10' BUILD_TYPE='Debug'
       script: "./scripts/ci/run_cmake.sh"
     - stage: compile_test
       os: osx
       osx_image: xcode11.4
-      compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Debug'
+      compiler: gcc-10
+      env: COMPILER='g++-10' BUILD_TYPE='Debug'
       script: 
         - "./scripts/ci/run_cmake.sh"
         - cd Build/developers
