@@ -1,6 +1,6 @@
 /**
- * @ file 
- * @ brief NPDE homework problem: Computation of stationary currents 
+ * @ file
+ * @ brief NPDE homework problem: Computation of stationary currents
  * @ author Ralf Hiptmair
  * @ date July 2020
  * @ copyright Developed at SAM, ETH Zurich
@@ -14,28 +14,35 @@ int main(int argc, char** argv) {
   std::string basename{};
   switch (argc) {
     case 1: {
-      // Loop through "bentwire0" - "bentwire6"
-      std::vector<std::pair<double, double>> fluxes{};
+      // Loop through meshes "bentwire0" - "bentwire6" for studying convergence
+      std::vector<std::tuple<double, double, double>> fluxes{};
       for (unsigned int l = 0; l <= 6; ++l) {
         basename = "bentwire" + std::to_string(l);
         fluxes.push_back(dmxbc::computePotential(basename));
       }
-      double ref_flux = fluxes[6].second;
+      double ref_flux = 0.1859836202175363;  // "Reference value"
+      const int fieldwidth = 10; 
+      std::cout << std::fixed << std::setprecision(6) << std::setfill(' ');
+      std::cout << std::setw(fieldwidth) << "h" << std::setw(fieldwidth) << "bd_flux"
+                << std::setw(fieldwidth) << "err(bd)" << std::setw(fieldwidth) << "vol_flux"
+                << std::setw(fieldwidth) << "err(vol)" << std::endl;
       for (unsigned int l = 0; l <= 6; ++l) {
-        std::cout << "Level " << l << ": bd flux = " << fluxes[l].first
-                  << " (err = " << std::abs(fluxes[l].first - ref_flux)
-                  << "), vol flux = " << fluxes[l].second
-                  << " (err = " << std::abs(fluxes[l].second - ref_flux) << ")"
-                  << std::endl;
+        const double h = std::get<0>(fluxes[l]);
+        const double bd_flux = std::get<1>(fluxes[l]);
+        const double vol_flux = std::get<2>(fluxes[l]);
+        std::cout << std::setw(fieldwidth) << h << std::setw(fieldwidth) << bd_flux
+                  << std::setw(fieldwidth) << std::abs(bd_flux - ref_flux)
+                  << std::setw(fieldwidth) << vol_flux << std::setw(fieldwidth)
+                  << std::abs(vol_flux - ref_flux) << std::endl;
       }
       break;
     }
     case 2: {
       // Filename given via the command line
       basename = argv[1];
-      auto [bd_flux, vol_flux] = dmxbc::computePotential(basename);
-      std::cout << basename << ": fluxes = " << bd_flux << ", " << vol_flux
-                << std::endl;
+      auto [h, bd_flux, vol_flux] = dmxbc::computePotential(basename);
+      std::cout << basename << ": h = " << h << ", fluxes = " << bd_flux << ", "
+                << vol_flux << std::endl;
       break;
     }
     default: {
