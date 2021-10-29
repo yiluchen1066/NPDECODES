@@ -79,10 +79,10 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF &&F,
   Eigen::VectorXd sigma = Eigen::VectorXd::Zero(n);  // Vector of slopes
   Eigen::VectorXd fd = Eigen::VectorXd::Zero(n);     // Flux differences
 
-  sigma[0] = slopes(mu[0], mu[0], mu[1]);
+  sigma[0] = slopes(mu[n-1], mu[0], mu[1]);
   for (int j = 1; j < n - 1; ++j)
     sigma[j] = slopes(mu[j - 1], mu[j], mu[j + 1]);
-  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[n - 1]);
+  sigma[n - 1] = slopes(mu[n - 2], mu[n - 1], mu[0]);
 
   // Compute linear reconstruction at endpoints of dual cells \lref{eq:slopval}
   Eigen::VectorXd nup = mu + 0.5 * sigma;
@@ -90,11 +90,11 @@ Eigen::VectorXd slopelimfluxdiffper(const Eigen::VectorXd &mu, FunctionF &&F,
 
   // As in \lref{cpp:consformevl}: constant continuation of data outside
   // \Blue{$[a,b]$}!
-  fd[0] = F(nup[0], num[1]) - F(mu[0], num[0]);
+  fd[0] = F(nup[0], num[1]) - F(mu[n-1], num[0]);
   for (int j = 1; j < n - 1; ++j)
     // see \lref{eq:2pcf}
     fd[j] = F(nup[j], num[j + 1]) - F(nup[j - 1], num[j]);
-  fd[n - 1] = F(nup[n - 1], mu[n - 1]) - F(nup[n - 2], num[n - 1]);
+  fd[n - 1] = F(nup[n - 1], mu[0]) - F(nup[n - 2], num[n - 1]);
   return fd;
 }
 /* SAM_LISTING_END_1 */

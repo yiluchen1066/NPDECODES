@@ -23,6 +23,7 @@ int main() {
   // Write the solutions to a file that can be used for plotting.
   //====================
   // Your code goes here
+  
   //====================
   /* SAM_LISTING_END_1 */
 

@@ -13,8 +13,9 @@ Eigen::MatrixXd eeulstep(const Eigen::MatrixXd& A, const Eigen::MatrixXd& Y0,
                          double h) {
   //====================
   // Your code goes here
+  return Y0+h*A*Y0; 
   //====================
-  return Y0;
+  
 }
 /* SAM_LISTING_END_3 */
 
@@ -23,8 +24,10 @@ Eigen::MatrixXd ieulstep(const Eigen::MatrixXd& A, const Eigen::MatrixXd& Y0,
                          double h) {
   //====================
   // Your code goes here
+  int n=A.rows();
+  return (Eigen::MatrixXd::Identity(n,n)-h*A).partialPivLu().solve(Y0);
   //====================
-  return Y0;
+  
 }
 /* SAM_LISTING_END_4 */
 
@@ -34,7 +37,9 @@ Eigen::MatrixXd impstep(const Eigen::MatrixXd& A, const Eigen::MatrixXd& Y0,
   //====================
   // Your code goes here
   //====================
-  return Y0;
+  int n=A.nrows();
+  return (Eigen::MatrixXd::Identity(n,n)-0.5*h*A).partialPivLu().solve(Y0+0.5*h*A*Y0);
+  
 }
 /* SAM_LISTING_END_5 */
 

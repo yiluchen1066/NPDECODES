@@ -64,7 +64,17 @@ Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(
 
   //====================
   // Your code goes here
+  
+  int numEges = mesh.NumEntities(1); 
+  int numnodes = mesh.NumEntities(2); 
   //====================
+
+  Eigen::SparseMatrix<int, Eigen::RowMajor> G(numEges, numnodes); 
+  G.reserve(numEges*2); 
+
+
+  for (const )
+
 
   return G;
 }
@@ -83,6 +93,7 @@ Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(
 
   //====================
   // Your code goes here
+
   //====================
 
   return D;

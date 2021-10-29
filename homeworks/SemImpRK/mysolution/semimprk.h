@@ -26,6 +26,28 @@ std::vector<Eigen::VectorXd> SolveRosenbrock(Func &&f, Jac &&df,
   std::vector<Eigen::VectorXd> res(M + 1);
   //====================
   // Your code goes here
+  // that aapplies the Rosenbrock method 7.4.2 for solving an initial value problem for an 
+  res[0]=y0; 
+  double h = T/M; 
+  int size = y0.size(); // N 
+  double a = 1./(std::sqrt(2)+2.); 
+
+  Eigen::VectorXd k1(size); 
+  Eigen::VectorXd k2(size); 
+
+  Eigen::MatrixXd I = Eigen::MatrixXd::Identity(size, size);
+  Eigen::MatrixXd J(size,size); 
+  Eigen::MatrixXd W(size,size); 
+
+  for (int iter =1; iter < M+1; iter++){
+    Eigen::VectorXd &yold = res[i-1]; 
+    J=df(yold); 
+    W=I-a*h*J; 
+    k1 = W.lu().solve(f(yold));
+    k2 = W.lu().solve(f(yold+0.5*h*k1)-a*h*J*k1); 
+    res[i] = yold + h*k2; 
+  }
+
   //====================
   return res;
 }

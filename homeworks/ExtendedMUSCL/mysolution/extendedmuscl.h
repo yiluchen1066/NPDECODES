@@ -60,7 +60,14 @@ State sspEvolop(FUNCTOR &&f, State y, double tau) {
   State y_tau;
   //====================
   // Your code goes here
-  //====================
+  // implement the discrete operator \chi according to 11.7.14. 
+  // the type State must support basic vector operations like addition and scalar multiplication
+  // with a real number
+  // the f must supply the right hand-side function f of the autonomous ODE and is expected to have the signature...
+  State k; 
+  k= y+tau*f(y); 
+  k= 3/4*y+1/4*k+1/4*tau*f(k); 
+  y_tau = 1/3*y+2/3*k+2/3*tau*f(k); 
   return y_tau;
 }
 /* SAM_LISTING_END_1 */
@@ -81,7 +88,7 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   // Set up spacial mesh and inital data.
   double a = 0.0;
   double b = 1.0;
-  double h = (b - a) / n;
+  double h = (b - a) / n; // h spatialstep
   Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(n, a + 0.5 * h, b - 0.5 * h);
 
   // Approximate dual cell averages at t=0
@@ -90,9 +97,23 @@ Eigen::VectorXd solveClaw(U0_FUNCTOR &&u0, double T, unsigned int n) {
   double alpha = mu.minCoeff();  // lower bound for initial data
   double beta = mu.maxCoeff();   // upper bound for initial data
   assert(alpha > 0.0 && beta > 0.0);
+  assert(alpha > 0.0 && beta > 0.0); 
 
   //====================
   // Your code goes here
+  //set timestep tau according to the CFL confition
+  double tau = h/(std::max(std::abs(std::log(alpha)),std::abs(std::log(beta)))); 
+
+  auto semi_discrete_rhs = [h_inv] (const Eigen::VectorXd &mu) -> Eigen::VectorXd{
+    return -h_inv * slopelimfluxdiffper(mu, &logGodunovFlux, &limiterMC); 
+  }
+  // timestepping: solve tge semi-discrete ODE
+  int N = T/(tau+0.5); // tau timestep
+  for(int i =0; i<N; i++){
+    mu = sspEvolop(semidiscrete_rhs, mu, tau); 
+  }
+ß
+
   //====================
 
   return mu;
@@ -131,6 +152,23 @@ void interpolate(const VECSOURCE &s, VECDEST &d) {
   const double h = 1.0 / N;
 //====================
 // Your code goes here
+//loop over nodes of destination mesh 
+for(int j=0; j<N; j++){
+  // need xd xsl xsr xd
+  // need svl svr
+  double xd = j*h+0.5; 
+  std::size_t k= (std::size_t)std::roundxd/H); 
+  double xsl = k*H-0.5; 
+  double xsl = xsr + H; 
+
+  double svl=s[(k<1)?n-1:k-1]; 
+  double svr=s[(k>=n-1)?0:k]; 
+
+  d[j]= ((xd-xsr)*svl+(xsl-xd)*svr)/H; 
+
+}
+
+
 //====================
 }
 /* SAM_LISTING_END_5 */
@@ -153,6 +191,18 @@ void studyCvgMUSCLSolution(U0_FUNCTOR &&u0, double T) {
   Eigen::VectorXd u_ref{solveClaw(std::forward<U0_FUNCTOR>(u0), T, n_ref)};
   //====================
   // Your code goes here
+  // compute solutions on different meshes 
+  int min =4; 
+  int max =10; 
+  for (int i=4; i<=10; i++){
+    n = std::pow(2,n); 
+    Eigen::VectorXd u ={solveClaw(std::forward<U0_FUNCTOR>(u0), T, n)}; 
+    Eigen::VectorXd u_prop = Eigen::VectorXd::Zero(u_ref.size()); 
+    interpolate(u,u_prop); 
+    double linf_error = (u_prop-u_ref).lpNorm(); 
+    double l1_error = (u_prop-u_ref).lpNorm<1>()/n_ref; 
+
+  }
   //====================
   std::cout << "n \t linf error \t l1 error" << std::endl;
   for (auto &data : result) {

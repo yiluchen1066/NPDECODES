@@ -53,6 +53,8 @@ int main() {
   // Initial value for model
   Eigen::Vector2d y0(100.0, 5.0);
 
+  
+
   // Array of number of steps (for convergence study)
   std::vector<unsigned int> N = {128,  256,  512,   1024,  2048,
                                  4096, 8192, 16384, 32768, 65536};

@@ -38,6 +38,20 @@ Eigen::VectorXd rhsVectorheatSource(const lf::assemble::DofHandler &dofh,
   Eigen::VectorXd phi(N_dofs);
   //====================
   // Your code goes here
+  // conpute the right-hand-side vector arising from the Galerkin finite element discrtizaition of the 
+  // linear functional on the right hand side of the spatial variational formulation 
+  // the argument dofh supplies information about the mesh and the local-to-global index mapping
+  auto f [time] (Eigen::Vector2d x){
+    const double pi = 3.1415926; 
+    Eigen::Vector2d PI (std::cos(pi*time),std::sin(pi*time)); 
+    return (((x-0.5*PI).norm()<0.5)? 1;0); 
+  }
+
+  // pointer to current mesh; 
+  auto mesh_p= dofh.mesh(); 
+  phi.setZero(); 
+
+
   //====================
   return phi;
 }
@@ -58,6 +72,21 @@ Eigen::VectorXd solveHeatEvolution(const lf::assemble::DofHandler &dofh,
   Eigen::VectorXd discrete_heat_sol(dofh.NumDofs());
   //====================
   // Your code goes here
+  // solves the IBVP 9.1.1 ober the time interval. using m equidistant timesteps and the finite element 
+  // spaces as encoded in the argument dofh; 
+  double tau = final_time/m; 
+  const ls::uscalfe::size_type N_dof(dofh.NumDofs());//N
+
+  Radau3MOLTimestepper radau_solver(dofh); 
+  // starting with the zero initial condition; 
+  Eigen::VectorXd descrete_heat_cur = radau_solver.discreteEvolutionOperator(0.0, tau, const Eigen::VectorXd::Zero(N_dofs)); 
+
+  Eigen::VectorXd discrete_heat_next; 
+  for (int i =1; i<m; i++){
+    discrete_heat_next = radar_solver.discreteEvolutionOperator(i*tau, tau, discrete_heat_cur); 
+    discrete_heat_cur = discrete_heat_next; 
+  }
+  discrete_heat_sol = discrete_heat_cur; 
   //====================
   return discrete_heat_sol;
 }
@@ -94,6 +123,40 @@ Eigen::VectorXd Radau3MOLTimestepper::discreteEvolutionOperator(
   Eigen::VectorXd discrete_evolution_operator(dofh_.NumDofs());
   //====================
   // Your code goes here
+  // 
+  //firstly we need to compute the increments ki i=1,2 by solving 9.1.15 using 
+  //Eigen's direct sparse elimation solver 
+  // to that end, you have to build the system matrix as an object of type 
+  // Eigen::SparseMatrix<double> by using the Kronecker-product formula 
+  // the matrices A and M should have been initialized in the constructor 
+  // althernatively, you could already have initialized the two 2N *2N matrices 
+  
+
+  //dimension of finite element space: 
+  const lf::uscalfe::size_type N_dof(dofh_.NumDofs()); 
+  
+  // building the linear system for the implicitely defined increments 
+  
+  // first assembly the right hand side using block initialization; 
+  Eigen::VectorXd linearSystem_rhs(2*N_dof);
+  // A_, c_ have been initialized in the constructor 
+  Eigen::VectorXd rhs_abstraction = A_*mu; 
+  linearSystem_rhs << rhsVectorheatSource(dofh_, time+c_(0)*tau)-rhs_abstraction, rhsVectorheatSource(dofh_, time+tau)-rhs_abstraction; 
+
+  // then implicit Runge-Kutta methods leads to systems of equations that must be solved in order to 
+  // obtained the increments 
+
+  Eigen::SparseMatrix<double> linSys_mat; 
+  linSys_mat = M_Kp_ +tau*A_kp_; 
+  Eigen::SparseLU<Eigen::SpaseMatrix<double>> solver; 
+  solver.compute(linSys_mat); 
+  Eigen::VectorXd k = solver.solve(linearSystem_rhs); 
+
+  discrete_evolution_operator = mu + tau*(k.topRows(N_dof)*b_[0] + b_[1] *k.bottomRows(N_dof)); 
+
+
+
+  // 
   //====================
   return discrete_evolution_operator;
 }

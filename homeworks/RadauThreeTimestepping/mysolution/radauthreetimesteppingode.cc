@@ -19,6 +19,18 @@ std::vector<double> twoStageRadauTimesteppingLinScalODE(unsigned int m) {
   std::vector<double> sol_vec;
   //====================
   // Your code goes here
+  //that uses m equidistant steps of the 2-stage Radau method to solve the linear scalar initial
+  // value problem 9.1.10
+  // on the time interval [0,5] and returns the generated sequence 
+  sol_vec.push_back(1.0); 
+  double tau = 5/m; // m steps; tau stepsizes; 
+
+  double evolution_operator = (1-tau*(1+tau/6)/((1+5/12*tau)*(1+tau/4)+tau**2/16)); 
+
+  for (int i = 1; i<m+1; i++){
+    sol_vec.push_back(evolution_operator*sol_vec.at(i));  
+  }
+
   //====================
   return sol_vec;
 }
@@ -33,6 +45,10 @@ void testConvergenceTwoStageRadauLinScalODE() {
 
   //====================
   // Your code goes here
+  // produces an output that permits tou qualitatively and quantitively accesss the convergence of the 
+  // 2-stage radau implicit runge-kutta single step methods for the initial value problem 
+  // one way to proceed is to produce a sequence of N solutions with m =10*2**k eduidistant timesteps
+  // what is the observed order of this single-steo methods 
   //====================
   /* SAM_LISTING_END_2 */
 

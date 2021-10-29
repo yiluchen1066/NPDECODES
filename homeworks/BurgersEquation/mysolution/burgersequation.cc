@@ -31,10 +31,25 @@ Eigen::VectorXd solveBurgersGodunov(double T, unsigned int N) {
          return 0.0 <= x && x <= 1.0 ? Square(std::sin(PI * x)) : 0.0;
        }).eval();
 
+  for (int i=0; i<m; m++){
+    for (int int j= N; j>0; j--){
+      mu(j) = mu(j) -tau/h*(f(mu(j))-f(mu(j-1))); 
+    }
+    mu(0)=0.0; 
+  }
   //====================
   // Your code goes here
-  //====================
 
+  // implement the function that solves 11.1.2 based on the smi discretization developed in sub-problem 11-1g
+  // using N equispaced nodes xj in ipace interval -1, 4. 
+  // fpr temporal discretization use explicit Euler timestepping with timestep tau=h, 
+  //where h is the mesh width in space. 
+  // the function is supposed to return nodal values (averages over dual cells) of the
+  // the solution at time T. 
+  // for computingthe flux you may assume that the solution is zero outside the domian, uss the initial condition 
+  // and find the mu(0) by simply sampling w0 at the nodes of mesh, outside -1,4 the solution is set to zero
+
+  //====================
   return mu;
 }
 /* SAM_LISTING_END_1 */
@@ -69,6 +84,20 @@ Eigen::Matrix<double, 3, 4> numexpBurgersGodunov() {
 
   //====================
   // Your code goes here
+  //tabulate the discrete error norm as a
+  for (int k=0; k<1; k++){
+    Eigen::VectorXd mu_ref = solveBurgerGodunov(T(k), 3200); 
+    Eigen::Vector4d error; 
+    for (int i=0; i<4; i++){
+      Eigen::VectorXd mu_ref_sub = reduce(mu_ref, N(i)); 
+      Eigen::VectorXd mu = solveBurgerGodunov(T(k), h(i)); 
+      error(i) = (mu-mu_ref_sub).lpNorm<1>(); 
+ß
+    }
+    result.row(k+1) = error.transpose();
+  }
+
+
   //====================
 
   return result;

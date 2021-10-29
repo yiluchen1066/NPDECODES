@@ -26,6 +26,25 @@ std::array<std::size_t, 3> countEntityDofs(
   std::array<std::size_t, 3> entityDofs;
   //====================
   // Your code goes here
+  // returns the number of global shape functions (managed by the local-> global index ing mapping encoded
+  // in the dofhander) associated with mesh entities of co-domensioon 0, 1, and 2 respectively
+  // the co-dimension also serves as index for the returned array
+  
+  // loop over all mesh entitesm get the inices of the global shape functions
+  // associated with them via DofHandker::InteriorGlobalDofIndices()
+  // and count them 
+  // this number is alo available through DofHandler::NumInteriorDofs()
+
+  // iterate over entities in the mesh and get interior number of dofs for each
+  std::shared_ptr<lf::mesh::Mesh> mesh = dofhandler.Mesh(); 
+  for (int co_dim =0 ; co_dim <=2; co_dim++){
+    entityDofs[co_dim] =0; 
+    for (auto el : mesh->Entities(co_dim)){
+      entity_Dofs[co_dim] += dofhandler.interiorGlobalDofIndices(el); 
+    }
+  }
+  
+
   //====================
   return entityDofs;
 }
@@ -41,6 +60,22 @@ std::size_t countBoundaryDofs(const lf::assemble::DofHandler &dofhandler) {
   std::size_t no_dofs_on_bd = 0;
   //====================
   // Your code goes here
+  // tells the number of global shape functions associated with mesh entities located on the 
+  // boundary 
+  // use the function flagEntitiesonBoundary to obtain the array of flags whether an entity is located on the boundary 
+  // edges and nodes can be on the boundary; 
+  for (auto edge: mesh->Entity(1)){
+    if (bd_flags(edge) == TRUE){
+      no_dofs_on_bd += dofhandler.InteriorGlobalDofIndices(edge); 
+    }
+  }
+
+  for (auto node: mesh->Entity(2)){
+    if (bd_flags(node) == TRUE){
+      no_dofs_on_bd += dofhandler.InteriorGlobalDofIndices(node); 
+    }
+  }
+
   //====================
   return no_dofs_on_bd;
 }
@@ -54,6 +89,35 @@ double integrateLinearFEFunction(
   double I = 0;
   //====================
   // Your code goes here
+  // computes the ...
+  // whose nodal bases coefficients are passed in mu 
+  // the dofhandler arguments provides the local-> global mapping 
+  // check whether the lf::assemble::DofHandler object dofhandler really fits the 
+  // lagrangian finite element space 
+  // run over all cells
+  // get the indices of the tent functions covering them via 
+  //DofHandler::GlobalDofIndices, 
+  // sum the corresponding entries of the coefficient vectors
+  // in linear Lagarangian FE, the integral over the basis functions 
+  // over a triangle K is 1/3*vol(k)
+
+  std::shared_ptr<lf::mesh::Mesh> mesh = dofhandler.Mesh(); 
+
+
+  for(auto cell: mesh->Entities(0)){
+    // lf::assemble::DofHandler::GlobalDofIndices 
+    // access to indices of global dof's belonging to an entity 
+    auto glob_dof_indices = dofhandler.GlobalDofIndices(*cell); 
+
+    double I_dof =0; 
+    for(auto dof_indice = glob_dof_indices.start(); dof_indice =glob_dof_indices.end(); dof_indice++){
+      I_dof += mu(dof_indice); 
+    }
+    lf::geometry::Geometry *cell->Geometry(); 
+    I_dof *= 1/3*lf::geometry::Volume(cell); 
+    I+=I_dof; 
+  }
+  
   //====================
   return I;
 }

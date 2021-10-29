@@ -26,6 +26,18 @@ Eigen::VectorXd solvePoissonBVP() {
 
   //====================
   // Your code goes here
+  // that is to call solve() in order to compute the basis expansion coefficients of a solution 
+  // of the Neumann boundary value problem
+  // make use of the LehrFEM++'s local PROVIDER types for element matrices for the bilinear form 
+  //for the weak-laplacian
+  // and element vectors for the linear form 
+  // initialize the lf::uscalfe::LinearFELocalLoadVector appropriately so that the right-hand side source function 
+  // provided by the funtion f(Eigen::Vector2d x); 
+
+  // define the element matrix and element vector builders and solve the system 
+  lf::uscalfe::LinearFELaplaceElementMatrix elmat_builder; 
+  lf::uscalfe::LinearFELocalLoadVector<double, decitype(mf_f)> elvec_builder(mf_f); 
+  Eigen::VectorXd solve(elmat_builder, elvec_provider)； 
   //====================
 
   return solution;

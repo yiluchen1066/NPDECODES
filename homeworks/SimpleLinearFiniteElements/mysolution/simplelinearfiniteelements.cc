@@ -58,6 +58,14 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
   Eigen::Matrix3d element_matrix;
   //====================
   // Your code goes here
+  // compute the local element matrix associated to the bilinear form 
+  // and linear lagrangian finite elements on triangular elments 
+  // the paramater triangle passes a 2*3 matrix containing the coordinates of the vertices of the triangle 
+  // in its column. 
+  // the parameter triangle passes a 2*3 matrix containing the coordinates of the vertices of the triangle 
+  // in its column 
+  element_matrix << 2,1,1,1,2,1,1,1,2; 
+  element_matrix << getArea(triangle)/12*element_matrix; 
   //====================
   return element_matrix;
 }
@@ -77,6 +85,22 @@ double L2Error(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
   double l2error_squared = 0.0;
   //====================
   // Your code goes here
+  // compute the L2 norm of uh-u, where u is the exact solution of 2.5.1, passed through the function handle 
+  // and uh is the finite element solution passed through its coeeficients uFEM, with respect the customary
+  // basis of the tent function, 
+  // loop over all triangles:
+
+  for (int j =0; j< mesh.elements.rows();j++){
+    Eigen::Matrix<2,3> triangle = mesh[j]; 
+
+    Eigen:;Vector3d error_vertices; 
+    for(int k=0; k<3; k++){
+      error_vertices[k] = (exact(triangle.elements(k))-uFEM(mesh.elements(j,k))); 
+    }
+    l2error_squared += 3/getArea(triangle)*error_vertices.sqaurednorm(); 
+
+  }
+  
   //====================
 
   return std::sqrt(l2error_squared);
@@ -100,6 +124,30 @@ double H1Serror(
   double H1Serror_squared = 0.0;
   //====================
   // Your code goes here
+  // function gradbarycoordinates gives the constant vectors gradlambdal for a triangle
+  for (int j=0; j=mesh.elements.rows(); j++){
+    Eigen::Matrix<2,3> triangle = mesh[j]; 
+
+    Eigen::Vector3d values_at_triangles; 
+    for (int k=0; k<3; k+=){
+
+      values_at_triangles[k] = uFEM(mesh.elements(j,k)); 
+    }
+
+    Eigen::Vector2d gradient_FEM = gradbaryordinates(triangle)*values_at_vertices; 
+
+    for (int k=0; k<3; k++){
+      Eigen::Vector3d errors_at_vertices; 
+      Eigen;:Vector2d gradient_exact = triangle.col(k); 
+      errors_at_vertices(k) = (gradient_FEM-gradient_exact).squaredNorm(); 
+    }
+
+    for (int k=0; k<3; k++){
+      H1Serror_squared += errors_at_vertices(k)*3/getArea(triangle); 
+    }
+
+    
+  }
   //====================
 
   return std::sqrt(H1Serror_squared);
@@ -209,6 +257,8 @@ std::tuple<Eigen::VectorXd, double, double> Solve(
   U = Eigen::VectorXd::Zero(mesh.vertices.rows());
   l2error = 1.0;
   h1error = 1.0;
+
+  
   //====================
   return std::make_tuple(U, l2error, h1error);
 }

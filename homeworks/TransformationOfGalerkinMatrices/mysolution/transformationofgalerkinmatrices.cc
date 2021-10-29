@@ -38,6 +38,40 @@ std::vector<Eigen::Triplet<double>> transformCOOmatrix(
   int M = n_cols / 2;  // Half the size
   //====================
   // Your code goes here
+  // implement a C++ function 
+  // that takes the Galerkin matrix A in triplet formatee and returns A~ also in triplet formate. 
+  // it can be taken granted that the argument matrix has no rows or columns with all zero entries, 
+  // which makes it possible to determine the matrix size from the triplet information. 
+  // the emplace_back() method adds an element to a vector 
+  for (const Eigen::Triplet<double>&it :A){
+    i = it.row()+1; 
+    j = it.col()+1; 
+    if (i%2==0 && j%2==0){
+      A_t.emplace_back(i/2-1, j/2-1, it.value());
+      A_t.emplace_back(i/2-1, j/2+M-1, -it.value()); 
+      A_t.emplace_back(i/2+M-1, j/2-1, -it.value()); 
+      A_t.emplace_back(i/2+M-1, j/2+M-1, it.value()); 
+    } else if (i%2==0 && j%2!=0){
+      A_t.emplace_back(i/2-1, (j+1)/2-1, it.value()); 
+      A_t.emplace_back(i/2-1, (j+1)/2+M-1, it.value()); 
+      A_t.emplace_back(i/2+M-1, (j+1)/2+M-1, -it.value()); 
+      A_t.emplace_back(i/2+M-1, (j+1)/2-1, -it.value());
+    } else if (i%2!=0 && j%2==0){
+      A_t.emplace_back((i+1)/2-1, j/2-1, it.value()); 
+      A_t.emplace_back((i+1)/2+M-1, j/2+M-1, -it.value()); 
+      A_t.emplace_back((i+1)/2+M-1, j/2-1,it.value()); 
+      A_t.emplace_back((i+1)/2-1, j/2+M-1, -it.value()); 
+      
+    } else if (i%2!=0 && j%2!=0){
+      A_t.emplace_back((i+1)/2-1, (j+1)/2-1, it.value()); 
+      A_t.emplace_back((i+1)/2+M-1, (j+1)/2+M-1, it.value()); 
+      A_t.emplace_back((i+1)/2-1, (j+1)/2+M-1, it.value()); 
+      A_t.emplace_back((i+1)/2+M-1, (j+1)/2-1, it.value());
+    }
+  }
+
+
+
   //====================
   return A_t;
 }

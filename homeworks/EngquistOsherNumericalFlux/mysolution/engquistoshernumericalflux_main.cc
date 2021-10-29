@@ -38,6 +38,12 @@ int main() {
   // you may uncomment the following line:
   // std::system("python3 " CURRENT_SOURCE_DIR "/plot_solution.py "
   // CURRENT_BINARY_DIR "/ufinal.csv " CURRENT_BINARY_DIR "/ufinal.eps");
+  // use the function solveCP to solve 11.2.1 for the given initial data 
+  // and the final time, computational interval and N=100. 
+  // the cell averages of u0 can be approcimated by its values at the cell centers, 
+  // exntend the main function do that it outputs the approximate dual cell averages at final tiem to a file 
+  // ufinal.csv. 
+  
   //====================
 
   return 0;

@@ -118,6 +118,17 @@ class implicitRKIntegrator {
     // Your code goes here
     // Use the function dampnewton(...) in dampnewton.h
     // to solve the non-linear system of equations.
+    //obtain the stages with damped newton method 
+    //the stages gi are to be computed with the damped newton method 
+    //applied to the nonlinear system of equations satisfied by the stages. 
+    Eigen::VectorXd gv = Eigen::VectorXd::Zero(s*d);
+    dampnewton(F, JF, gv); 
+
+    Eigen::MatrixXd K(d,s); 
+    for(int j=0; j<s; j++){
+      k.col(j) = f(y0+gv.segment(j*d*d)); 
+      y1 = y0 +h*K*b; 
+    }
     //====================
   }
   /* SAM_LISTING_END_0 */
