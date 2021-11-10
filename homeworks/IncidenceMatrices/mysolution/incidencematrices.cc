@@ -61,20 +61,37 @@ Eigen::SparseMatrix<int> computeEdgeVertexIncidenceMatrix(
     const lf::mesh::Mesh &mesh) {
   // Store edge-vertex incidence matrix here
   Eigen::SparseMatrix<int, Eigen::RowMajor> G;
+  using size_type = lf::mesh::Mesh::size_type; 
 
   //====================
   // Your code goes here
+  // index() method of lf:mesh:Mesh provides the numbering of entities which underlies 
+  // indexing of the entries of the incidence matrixes. 
+  // lf::mesh::Mesh::Index() provides a consecutive numbering of all mesh entities of a specific co-dimension 
+  // lf::mesh::Entity::SubEntities() returns an array of subentities and fix their ordering. 
+  const std::size_t nnz_row=2; 
+  const size_type num_edge = mesh.Numentities(1); 
+  const size_type num_node = mesh.Numentities(2); 
   
-  int numEges = mesh.NumEntities(1); 
-  int numnodes = mesh.NumEntities(2); 
+  Eigen::SparseMatrix<int, Eigen::RowMajor> G(num_edge, num_node); 
+  G.reserve(Eigen::VectorXi::Constant(num_edge,nnz_row)); 
+
+  // to compute G efficiently, we iterate over all edges and 
+  // check the index of the nodes at its end. 
+  // this is the efficient way to do the assembly, introduced as distribute scheme
+  // in class
+  for(lf::mesh::Entity *edge: mesh.Entities(1)){
+    nonstd::span<const lf::mesh::Entity *const> node{edge.SubEntities(1)}; // the relative codimension is 1
+    size_type edge_index = mesh.Index(*edge); 
+
+    size_type node_start_index = mesh.Index(*node[0]); 
+    size_type node_end_index = mesh.Index(*node[1]); //
+    // subentities returned from SubEntities() can be accessed through [] operator using their local index 
+    G.coeffRef(edge_index, node_start_index) +=1; 
+    G.coeffRef(edge_index, node_end_index) -=1; 
+  }
+  
   //====================
-
-  Eigen::SparseMatrix<int, Eigen::RowMajor> G(numEges, numnodes); 
-  G.reserve(numEges*2); 
-
-
-  for (const )
-
 
   return G;
 }
@@ -93,6 +110,26 @@ Eigen::SparseMatrix<int> computeCellEdgeIncidenceMatrix(
 
   //====================
   // Your code goes here
+  using size_type = lf::mesh::Mesh::size_type; 
+  const std::size_t nnz = 4; 
+  const size_type num_cell = mesh.NumEntities(0); 
+  const size_type num_edge = mesh.NumEntities(1); 
+  Eigen::SparseMatrix<int, Eigen::RowMajor> D(num_cell,num_edge); 
+  D.reserve(Eigen::VectorXi::Constant(num_cell,nnz)); 
+  for(lf::mesh::Entity *cell: mesh.Entities(0)){
+    // get edges and their orientations of a cell 
+    nonstd::span<const Entity* const> edges = cell->SubEntities(1); 
+    nonstd::span<const Entity* const> orientations = cell->RelativeOrientations(); 
+    size_type cell_index = mesh.Index(*cell); 
+    auto edge_start = edges.begin(); 
+    auto orientation_start = orientation.begin(); 
+    // get the index of each edge and add their orientations to D
+    for(; edge_start !=edges.end() && orientation_start != orientation.end(); edge_start++, orientation++){
+      size_type edge_index=mesh.Index(*edge[edge_start]);
+      D.coeffRef(cell_index,edge_index) += lf::mesh::to_sign(orientation_start);  
+    }
+  }
+
 
   //====================
 
@@ -112,6 +149,14 @@ bool testZeroIncidenceMatrixProduct(const lf::mesh::Mesh &mesh) {
 
   //====================
   // Your code goes here
+  // returns true whenever the two incidence matrices of the 2D hybrid mesh satisfy 
+  // the relationship asserted in 2.6.6 
+  Eigen::SparseMatrix<int> G = computeEdgeVertexIncidenceMatrix(*mesh); 
+  Eigen::SparseMatrix<int> D = computeCellEdgeIncidenceMatrix(*mesh); 
+  auto O = G*D; 
+  
+  isZero = O.norm()==0; 
+  }
   //====================
   return isZero;
 }

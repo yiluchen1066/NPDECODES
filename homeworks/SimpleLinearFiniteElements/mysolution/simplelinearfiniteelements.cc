@@ -64,8 +64,11 @@ Eigen::Matrix3d ElementMatrix_Mass_LFE(
   // in its column. 
   // the parameter triangle passes a 2*3 matrix containing the coordinates of the vertices of the triangle 
   // in its column 
-  element_matrix << 2,1,1,1,2,1,1,1,2; 
-  element_matrix << getArea(triangle)/12*element_matrix; 
+  element_matrix << 2,2,1,
+                    1,2,1,
+                    1,1,2; 
+  element_matrix *= getArea(triangle)/12; 
+
   //====================
   return element_matrix;
 }
@@ -89,16 +92,19 @@ double L2Error(const TriaMesh2D &mesh, const Eigen::VectorXd &uFEM,
   // and uh is the finite element solution passed through its coeeficients uFEM, with respect the customary
   // basis of the tent function, 
   // loop over all triangles:
-
-  for (int j =0; j< mesh.elements.rows();j++){
-    Eigen::Matrix<2,3> triangle = mesh[j]; 
-
-    Eigen:;Vector3d error_vertices; 
-    for(int k=0; k<3; k++){
-      error_vertices[k] = (exact(triangle.elements(k))-uFEM(mesh.elements(j,k))); 
+  for (int i=0; i<mesh.elements.rows(); i++){
+    Eigen::Matrix<double,2,3> triangle; 
+    for(int j=0; j<3; j++){
+      triangle.col(k) = mesh.vertices.row(elements(i,k));
     }
-    l2error_squared += 3/getArea(triangle)*error_vertices.sqaurednorm(); 
 
+    Eigen::Vector3d error_at_vertices; 
+    for(int k=0; k<3; k++){
+      error_at_vertices(k) = exact(triangle.col(k))- uFEM(mesh.elements(i,k)); 
+    }
+    for(int i=0; i<3; i++){
+      l2error_squared += getArea(triangle)/3.0*error_at_vertices(i).squaredNorm(); 
+    }
   }
   
   //====================
@@ -125,28 +131,27 @@ double H1Serror(
   //====================
   // Your code goes here
   // function gradbarycoordinates gives the constant vectors gradlambdal for a triangle
-  for (int j=0; j=mesh.elements.rows(); j++){
-    Eigen::Matrix<2,3> triangle = mesh[j]; 
-
-    Eigen::Vector3d values_at_triangles; 
-    for (int k=0; k<3; k+=){
-
-      values_at_triangles[k] = uFEM(mesh.elements(j,k)); 
+  for(int i =0; i<mesh.elements.rows();i++){
+    Eigen::Matrix<double, 2,3> triangle; 
+    for(int j=0; j<3; j++){
+      triangle.col(j) = mesh.vertices(i,j); 
     }
 
-    Eigen::Vector2d gradient_FEM = gradbaryordinates(triangle)*values_at_vertices; 
+    Eigen::Matrix<double,2,3> gradient_FEM; 
+    gradient_FEM = gradbarycoordinates(triangle); 
 
-    for (int k=0; k<3; k++){
-      Eigen::Vector3d errors_at_vertices; 
-      Eigen;:Vector2d gradient_exact = triangle.col(k); 
-      errors_at_vertices(k) = (gradient_FEM-gradient_exact).squaredNorm(); 
+    Eigen::Vector3d values_at_vertices; 
+    for(int k=0; k<3; k++){
+      values_at_vertices(k) = uFEM(mesh.elements(i,k)); 
     }
 
-    for (int k=0; k<3; k++){
-      H1Serror_squared += errors_at_vertices(k)*3/getArea(triangle); 
+    Eigen::Vector2d gradient_fem = gradient_FEM*values_at_vertices; 
+    Eigen::Vector3d error_at_vertices; 
+    for(int k =0; k<3; k++){
+      error_at_vertices(k) = (gradient_fem-exact(triangle.col(k))).squaredNorm(); 
     }
-
-    
+    H1Serror_squared += getArea(triangle)/3.0*error_at_vertices.sum(); 
+  }
   }
   //====================
 
@@ -254,11 +259,22 @@ std::tuple<Eigen::VectorXd, double, double> Solve(
   //====================
   // Your code goes here
   // Assigning some dummy values
-  U = Eigen::VectorXd::Zero(mesh.vertices.rows());
-  l2error = 1.0;
-  h1error = 1.0;
+  // the function is to return the coefficient vector U of Uh, and the L2 norm and H1 seminorm of the discretization error 
+  Eigen::SparseMatrix<double> A =GalerkinAssembly(mesh, ElementMatrix_Mass_LFE); 
+  Eigen::VectorXd phi = assemLoad_LFE(mesh, f); 
+  // solve the LSE using the sparse LU solver of the Eigen 
+  SparseLU<SparseMatrix<double>, COLAMDOrdering<int> > solver; 
+  solver.analyzePattern(A); 
+  solver.factorize(A); 
+  U = solver.solve(phi); 
+  l2error = L2Error(mesh,U,uExact); 
 
-  
+  Eigen::Vector2d gradient_exact = [pi](const Eigen::Vector2d &x){
+    gradient_exact >> -2.0 * pi * std::sin(2.0*pi*x(0))*std::cos(2.0*pi*x(1)), 
+                      -2.0 * pi * std::cos(2.0*pi*x(0))*std::sin(2.0*pi*x(1)); 
+    return gradient_exact; 
+  }
+  h1error = H1Serror(mesh, U, gradient_exact); 
   //====================
   return std::make_tuple(U, l2error, h1error);
 }
